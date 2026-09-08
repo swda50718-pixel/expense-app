@@ -11,46 +11,61 @@
 <link rel="apple-touch-icon" href="icon.png">
 <title>我的記帳本</title>
 <style>
-:root {
-  --blue:#2D5BE3; --blue-light:#EBF0FF; --green:#1D9E75;
-  --red:#E24B4A; --amber:#BA7517; --bg:#F4F6FB;
-  --card:#FFFFFF; --text:#1A1D2E; --text2:#6B7280;
-  --border:#E5E7EB; --radius:16px; --shadow:0 2px 12px rgba(45,91,227,0.08);
+:root{
+  --blue:#2D5BE3;--green:#1D9E75;--red:#E24B4A;--amber:#BA7517;--purple:#7C3AED;
+  --bg:#F4F6FB;--card:#FFFFFF;--text:#1A1D2E;--text2:#6B7280;
+  --border:#E5E7EB;--radius:16px;--shadow:0 2px 12px rgba(45,91,227,0.08);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
-.header{background:var(--blue);color:#fff;padding:52px 20px 20px;position:sticky;top:0;z-index:100}
-.header h1{font-size:20px;font-weight:700;margin-bottom:16px}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* Header */
+.header{background:var(--blue);color:#fff;padding:52px 20px 16px;position:sticky;top:0;z-index:100}
+.header h1{font-size:20px;font-weight:700;margin-bottom:14px}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .summary-item{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px}
-.summary-item.wide{grid-column:span 3;background:rgba(255,255,255,0.22)}
-.summary-label{font-size:11px;opacity:.85;margin-bottom:4px}
-.summary-value{font-size:18px;font-weight:700}
-.summary-item.wide .summary-value{font-size:26px}
+.summary-item.wide{grid-column:span 2;background:rgba(255,255,255,0.22)}
+.summary-item.actual{background:rgba(255,200,0,0.25);grid-column:span 2}
+.summary-label{font-size:11px;opacity:.85;margin-bottom:3px}
+.summary-value{font-size:17px;font-weight:700}
+.summary-item.wide .summary-value{font-size:24px}
+.summary-item.actual .summary-value{font-size:20px;color:#FFE566}
+.sync-badge{font-size:10px;color:rgba(255,255,255,0.65);text-align:right;margin-top:8px}
+
+/* Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 8px;font-size:11px;color:var(--text2);border:none;background:none;cursor:pointer;gap:4px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 8px;font-size:10px;color:var(--text2);border:none;background:none;cursor:pointer;gap:3px}
 .nav-btn.active{color:var(--blue)}
-.nav-icon{font-size:22px}
+.nav-icon{font-size:20px}
+
+/* Panels */
 .panel{display:none;padding:16px}
 .panel.active{display:block}
+
+/* Card */
 .card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
 .card-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* Form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .form-full{grid-column:span 2}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group label{font-size:12px;color:var(--text2);font-weight:500}
-.form-group input,.form-group select{height:44px;padding:0 12px;font-size:15px;border:1.5px solid var(--border);border-radius:10px;background:#F9FAFB;color:var(--text);width:100%;-webkit-appearance:none;appearance:none}
+.form-group input,.form-group select{height:44px;padding:0 12px;font-size:15px;border:1.5px solid var(--border);border-radius:10px;background:#F9FAFB;color:var(--text);width:100%;-webkit-appearance:none}
 .form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236B7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--blue);background:#fff}
 .btn-primary{width:100%;height:48px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-primary:active{opacity:.85}
+.btn-primary.purple{background:var(--purple)}
+
+/* Tx list */
 .month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .month-nav-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .month-label{font-size:16px;font-weight:700}
-.month-summary{display:flex;gap:10px;margin-bottom:14px}
-.month-chip{flex:1;background:var(--card);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow)}
-.month-chip-label{font-size:11px;color:var(--text2);margin-bottom:4px}
-.month-chip-value{font-size:17px;font-weight:700}
+.month-summary{display:flex;gap:8px;margin-bottom:14px}
+.month-chip{flex:1;background:var(--card);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+.month-chip-label{font-size:11px;color:var(--text2);margin-bottom:3px}
+.month-chip-value{font-size:16px;font-weight:700}
 .tx-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
 .tx-item:last-child{border-bottom:none}
 .tx-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
@@ -59,7 +74,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .tx-avatar.withdraw{background:#FEF3E2}
 .tx-info{flex:1;min-width:0}
 .tx-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tx-meta{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:6px}
+.tx-meta{font-size:12px;color:var(--text2);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tag{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:500}
 .tag.cash{background:#FEF3E2;color:#92400E}
 .tag.bank{background:#EFF6FF;color:#1D4ED8}
@@ -71,18 +86,48 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .tx-del{background:none;border:none;color:#D1D5DB;font-size:18px;cursor:pointer;padding:4px;display:block;margin-left:auto}
 .tx-del:active{color:var(--red)}
 .empty{text-align:center;padding:40px 0;color:var(--text2);font-size:14px}
+
+/* Balance */
 .balance-row{display:flex;gap:10px;align-items:flex-end}
 .balance-row .form-group{flex:1}
 .btn-set{height:44px;padding:0 18px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+
+/* Credit card bills */
+.bill-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.bill-item:last-child{border-bottom:none}
+.bill-avatar{width:40px;height:40px;border-radius:50%;background:#F3EEFF;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bill-info{flex:1;min-width:0}
+.bill-name{font-size:14px;font-weight:600}
+.bill-meta{font-size:12px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.bill-due{font-size:11px;padding:2px 7px;border-radius:8px;font-weight:500}
+.bill-due.urgent{background:#FDECEA;color:#991B1B}
+.bill-due.soon{background:#FEF3E2;color:#92400E}
+.bill-due.ok{background:#E3F5EE;color:#065F46}
+.bill-due.paid{background:#F3F4F6;color:#6B7280}
+.bill-right{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.bill-amount{font-size:15px;font-weight:700;color:var(--purple)}
+.bill-amount.paid-amt{color:var(--text2);text-decoration:line-through}
+.pay-btn{font-size:11px;padding:3px 10px;border-radius:8px;border:1.5px solid var(--purple);color:var(--purple);background:none;cursor:pointer;font-weight:600}
+.pay-btn.paid-btn{border-color:#9CA3AF;color:#9CA3AF}
+.bill-del{background:none;border:none;color:#D1D5DB;font-size:16px;cursor:pointer;padding:2px}
+.bill-del:active{color:var(--red)}
+
+/* Bill summary bar */
+.bill-summary{background:#F3EEFF;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.bill-summary-label{font-size:12px;color:var(--purple);font-weight:600}
+.bill-summary-value{font-size:18px;font-weight:700;color:var(--purple)}
+
+/* Chart */
 .chart-wrap{position:relative;height:200px;margin-top:8px}
 .chart-legend{display:flex;gap:16px;font-size:12px;color:var(--text2);margin-bottom:10px}
 .legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:4px}
+
+/* Utils */
 .loading{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px;font-size:14px;color:var(--text2)}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1A1D2E;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
-.sync-badge{font-size:10px;color:rgba(255,255,255,0.7);text-align:right;margin-top:6px}
 </style>
 </head>
 <body>
@@ -90,22 +135,27 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 <div class="loading" id="loading"><div class="spinner"></div><span>載入資料中...</span></div>
 <div class="toast" id="toast"></div>
 
+<!-- Header -->
 <div class="header">
   <h1>💰 我的記帳本</h1>
   <div class="summary-grid">
     <div class="summary-item wide">
-      <div class="summary-label">總餘額</div>
+      <div class="summary-label">總餘額（帳戶＋現金）</div>
       <div class="summary-value" id="s-total">NT$ 0</div>
+    </div>
+    <div class="summary-item actual">
+      <div class="summary-label">⚡ 實際可用餘額（扣除未繳信用卡）</div>
+      <div class="summary-value" id="s-actual">NT$ 0</div>
     </div>
     <div class="summary-item"><div class="summary-label">帳戶餘額</div><div class="summary-value" id="s-bank">NT$ 0</div></div>
     <div class="summary-item"><div class="summary-label">現金餘額</div><div class="summary-value" id="s-cash">NT$ 0</div></div>
     <div class="summary-item"><div class="summary-label">今日支出</div><div class="summary-value" id="s-today">NT$ 0</div></div>
     <div class="summary-item"><div class="summary-label">本月支出</div><div class="summary-value" id="s-month">NT$ 0</div></div>
-    <div class="summary-item"><div class="summary-label">本月提款</div><div class="summary-value" id="s-withdraw">NT$ 0</div></div>
   </div>
   <div class="sync-badge" id="syncBadge">⟳ 同步中...</div>
 </div>
 
+<!-- Panels -->
 <div class="panel active" id="panel-record">
   <div class="card">
     <div class="card-title">✏️ 新增記錄</div>
@@ -142,6 +192,43 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
   </div>
 </div>
 
+<div class="panel" id="panel-bills">
+  <div class="card">
+    <div class="card-title">💳 新增信用卡帳單</div>
+    <div class="form-grid">
+      <div class="form-group form-full">
+        <label>卡片名稱</label>
+        <input type="text" id="billName" placeholder="例：國泰世華、玉山...">
+      </div>
+      <div class="form-group">
+        <label>帳單金額 (NT$)</label>
+        <input type="number" id="billAmount" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div class="form-group">
+        <label>繳費到期日</label>
+        <input type="date" id="billDue">
+      </div>
+      <div class="form-group form-full">
+        <label>備註（選填）</label>
+        <input type="text" id="billNote" placeholder="例：6月帳單">
+      </div>
+    </div>
+    <button class="btn-primary purple" onclick="addBill()">＋ 新增帳單</button>
+  </div>
+
+  <div class="bill-summary">
+    <div>
+      <div class="bill-summary-label">未繳帳單合計</div>
+      <div style="font-size:12px;color:#7C3AED;margin-top:2px">共 <span id="billCount">0</span> 筆待繳</div>
+    </div>
+    <div class="bill-summary-value" id="billTotal">NT$ 0</div>
+  </div>
+
+  <div class="card">
+    <ul id="billList" style="list-style:none"></ul>
+  </div>
+</div>
+
 <div class="panel" id="panel-history">
   <div class="month-nav">
     <button class="month-nav-btn" onclick="prevMonth()">‹</button>
@@ -171,9 +258,6 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       <button class="btn-set" onclick="setBalance('cash')">更新</button>
     </div>
   </div>
-</div>
-
-<div class="panel" id="panel-chart">
   <div class="card">
     <div class="card-title">📊 近6個月趨勢</div>
     <div class="chart-legend">
@@ -184,213 +268,249 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
   </div>
 </div>
 
+<!-- Bottom Nav -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="switchTab('record')" id="nav-record"><span class="nav-icon">✏️</span>記帳</button>
+  <button class="nav-btn" onclick="switchTab('bills')" id="nav-bills"><span class="nav-icon">💳</span>信用卡</button>
   <button class="nav-btn" onclick="switchTab('history')" id="nav-history"><span class="nav-icon">📋</span>明細</button>
-  <button class="nav-btn" onclick="switchTab('balance')" id="nav-balance"><span class="nav-icon">⚙️</span>餘額</button>
-  <button class="nav-btn" onclick="switchTab('chart')" id="nav-chart"><span class="nav-icon">📊</span>統計</button>
+  <button class="nav-btn" onclick="switchTab('balance')" id="nav-balance"><span class="nav-icon">⚙️</span>設定</button>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbxrxqlBh-jnaPBjar7xkMbx4jUxg_X1HOduDng_vhUcvYeZVJsjIlnBkhMUAbA73l0/exec';
-const LS_KEY = 'expense_app_state';
+const LS_KEY = 'expense_app_v2';
 
-let state = { txs: [], cashBalance: 0, bankBalance: 0 };
+let state = { txs: [], bills: [], cashBalance: 0, bankBalance: 0 };
 let viewYear, viewMonth, chartInst = null;
 const now = new Date();
-viewYear = now.getFullYear();
-viewMonth = now.getMonth();
+viewYear = now.getFullYear(); viewMonth = now.getMonth();
 document.getElementById('txDate').value = now.toISOString().slice(0,10);
 
-// ── Local Storage ──
-function saveLocal() {
-  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {}
-}
+// 預設到期日為今天+14天
+const defDue = new Date(); defDue.setDate(defDue.getDate()+14);
+document.getElementById('billDue').value = defDue.toISOString().slice(0,10);
+
+function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
 function loadLocal() {
-  try {
-    const r = localStorage.getItem(LS_KEY);
-    if (r) { state = JSON.parse(r); return true; }
-  } catch(e) {}
+  try { const r=localStorage.getItem(LS_KEY); if(r){state=JSON.parse(r);if(!state.bills)state.bills=[];return true;} } catch(e){}
   return false;
 }
 
-// ── JSONP ──
 function jsonp(url) {
-  return new Promise((resolve, reject) => {
-    const cb = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    const timer = setTimeout(() => {
-      cleanup(); reject(new Error('timeout'));
-    }, 10000);
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cb];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
-    window[cb] = (data) => { cleanup(); resolve(data); };
-    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
-    script.onerror = () => { cleanup(); reject(new Error('script error')); };
+  return new Promise((resolve,reject)=>{
+    const cb='cb_'+Date.now();
+    const script=document.createElement('script');
+    const timer=setTimeout(()=>{cleanup();reject(new Error('timeout'));},10000);
+    function cleanup(){clearTimeout(timer);delete window[cb];if(script.parentNode)script.parentNode.removeChild(script);}
+    window[cb]=(data)=>{cleanup();resolve(data);};
+    script.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
+    script.onerror=()=>{cleanup();reject(new Error('error'));};
     document.head.appendChild(script);
   });
 }
-
-function apiGet(action, params = {}) {
-  let url = API + '?action=' + action;
-  for (const k in params) url += '&' + k + '=' + encodeURIComponent(params[k]);
+function apiGet(action,params={}){
+  let url=API+'?action='+action;
+  for(const k in params) url+='&'+k+'='+encodeURIComponent(params[k]);
   return jsonp(url);
 }
 
-// ── Init ──
+const fmt = n => 'NT$ '+Math.round(n).toLocaleString('zh-TW');
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// ── 到期日狀態 ──
+function dueStatus(dueStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const due = new Date(dueStr); due.setHours(0,0,0,0);
+  const diff = Math.round((due-today)/(1000*60*60*24));
+  if(diff<0) return { cls:'urgent', label:'已逾期' };
+  if(diff===0) return { cls:'urgent', label:'今天到期' };
+  if(diff<=5) return { cls:'soon', label:`剩 ${diff} 天` };
+  return { cls:'ok', label:`剩 ${diff} 天` };
+}
+
+// ── Load ──
 async function loadData() {
-  // 先從本地載入，立刻顯示
-  if (loadLocal()) {
-    renderSummary(); renderHistory();
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('syncBadge').textContent = '⟳ 雲端同步中...';
-  }
-  // 再從雲端更新
+  if(loadLocal()){ renderAll(); document.getElementById('loading').style.display='none'; }
   try {
     const data = await apiGet('getAll');
-    state.txs = data.txs || [];
-    state.cashBalance = data.cashBalance || 0;
-    state.bankBalance = data.bankBalance || 0;
-    saveLocal();
-    renderSummary(); renderHistory();
-    document.getElementById('syncBadge').textContent = '✓ 已同步';
+    state.txs = data.txs||[];
+    state.cashBalance = data.cashBalance||0;
+    state.bankBalance = data.bankBalance||0;
+    // bills 只存 local（不佔 Sheets 欄位）
+    saveLocal(); renderAll();
+    document.getElementById('syncBadge').textContent='✓ 已同步';
   } catch(e) {
-    document.getElementById('syncBadge').textContent = '⚠ 離線模式';
-    if (!loadLocal()) toast('無法連線，請確認網路');
+    document.getElementById('syncBadge').textContent='⚠ 離線模式';
   }
-  document.getElementById('loading').style.display = 'none';
+  document.getElementById('loading').style.display='none';
 }
 
-// ── Helpers ──
-const fmt = n => 'NT$ ' + Math.round(n).toLocaleString('zh-TW');
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2200);
+function renderAll(){ renderSummary(); renderBills(); renderHistory(); }
+
+// ── Summary ──
+function renderSummary(){
+  const today=now.toISOString().slice(0,10);
+  const mp=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  let todayExp=0, monthExp=0;
+  state.txs.forEach(t=>{
+    if(t.date===today&&t.type==='expense') todayExp+=t.amount;
+    if(t.date&&t.date.startsWith(mp)&&t.type==='expense') monthExp+=t.amount;
+  });
+  const unpaidTotal = state.bills.filter(b=>!b.paid).reduce((s,b)=>s+b.amount,0);
+  const total = state.cashBalance+state.bankBalance;
+  document.getElementById('s-total').textContent=fmt(total);
+  document.getElementById('s-actual').textContent=fmt(total-unpaidTotal);
+  document.getElementById('s-bank').textContent=fmt(state.bankBalance);
+  document.getElementById('s-cash').textContent=fmt(state.cashBalance);
+  document.getElementById('s-today').textContent=fmt(todayExp);
+  document.getElementById('s-month').textContent=fmt(monthExp);
 }
 
-function onTypeChange() {
-  document.getElementById('sourceGroup').style.display =
-    document.getElementById('txType').value === 'withdraw' ? 'none' : '';
+// ── Bills ──
+function addBill(){
+  const name=document.getElementById('billName').value.trim();
+  const amount=parseFloat(document.getElementById('billAmount').value);
+  const due=document.getElementById('billDue').value;
+  const note=document.getElementById('billNote').value.trim();
+  if(!name){toast('請輸入卡片名稱');return;}
+  if(!amount||amount<=0){toast('請輸入有效金額');return;}
+  if(!due){toast('請選擇到期日');return;}
+  const bill={id:Date.now(),name,amount,due,note,paid:false,paidDate:null};
+  state.bills.unshift(bill);
+  saveLocal(); renderSummary(); renderBills();
+  document.getElementById('billName').value='';
+  document.getElementById('billAmount').value='';
+  document.getElementById('billNote').value='';
+  toast('✅ 帳單已新增');
 }
 
-// ── Add ──
-async function addTx() {
-  const type = document.getElementById('txType').value;
-  const amount = parseFloat(document.getElementById('txAmount').value);
-  const date = document.getElementById('txDate').value;
-  const desc = document.getElementById('txDesc').value.trim() ||
-    (type === 'expense' ? '支出' : type === 'income' ? '收入' : '提款');
-  const source = type === 'withdraw' ? 'both' : document.getElementById('txSource').value;
-
-  if (!amount || amount <= 0) { toast('請輸入有效金額'); return; }
-  if (!date) { toast('請選擇日期'); return; }
-
-  if (type === 'expense') {
-    source === 'cash' ? (state.cashBalance -= amount) : (state.bankBalance -= amount);
-  } else if (type === 'income') {
-    source === 'cash' ? (state.cashBalance += amount) : (state.bankBalance += amount);
-  } else {
-    state.bankBalance -= amount; state.cashBalance += amount;
-  }
-
-  const tx = { id: Date.now(), date, type, desc, amount, source,
-    cashBalance: state.cashBalance, bankBalance: state.bankBalance };
-  state.txs.unshift(tx);
-  saveLocal(); renderSummary();
-  document.getElementById('txAmount').value = '';
-  document.getElementById('txDesc').value = '';
-  toast('✅ 已新增');
-
-  try {
-    await apiGet('addTx', { data: JSON.stringify(tx) });
-    document.getElementById('syncBadge').textContent = '✓ 已同步';
-  } catch(e) {
-    document.getElementById('syncBadge').textContent = '⚠ 離線中，資料已暫存';
-  }
+function togglePaid(id){
+  const bill=state.bills.find(b=>b.id===id);
+  if(!bill) return;
+  bill.paid=!bill.paid;
+  bill.paidDate=bill.paid?now.toISOString().slice(0,10):null;
+  saveLocal(); renderSummary(); renderBills();
+  toast(bill.paid?'✅ 已標記為繳清':'↩ 已取消繳清');
 }
 
-// ── Delete ──
-async function deleteTx(id) {
-  if (!confirm('確定刪除這筆記錄？')) return;
-  const tx = state.txs.find(t => String(t.id) === String(id));
-  if (!tx) return;
-
-  if (tx.type === 'expense') {
-    tx.source === 'cash' ? (state.cashBalance += tx.amount) : (state.bankBalance += tx.amount);
-  } else if (tx.type === 'income') {
-    tx.source === 'cash' ? (state.cashBalance -= tx.amount) : (state.bankBalance -= tx.amount);
-  } else {
-    state.bankBalance += tx.amount; state.cashBalance -= tx.amount;
-  }
-
-  state.txs = state.txs.filter(t => String(t.id) !== String(id));
-  saveLocal(); renderSummary(); renderHistory();
+function deleteBill(id){
+  if(!confirm('確定刪除這筆帳單？'))return;
+  state.bills=state.bills.filter(b=>b.id!==id);
+  saveLocal(); renderSummary(); renderBills();
   toast('🗑️ 已刪除');
-
-  try { await apiGet('deleteTx', { id }); } catch(e) {}
 }
 
-// ── Set Balance ──
-async function setBalance(type) {
-  const val = parseFloat(document.getElementById(type + 'Input').value);
-  if (isNaN(val)) { toast('請輸入有效金額'); return; }
-  state[type + 'Balance'] = val;
+function renderBills(){
+  const unpaid=state.bills.filter(b=>!b.paid);
+  const total=unpaid.reduce((s,b)=>s+b.amount,0);
+  document.getElementById('billCount').textContent=unpaid.length;
+  document.getElementById('billTotal').textContent=fmt(total);
+
+  const list=document.getElementById('billList');
+  if(!state.bills.length){list.innerHTML='<li class="empty">📭 尚無帳單記錄</li>';return;}
+
+  // 排序：未繳優先、依到期日排
+  const sorted=[...state.bills].sort((a,b)=>{
+    if(a.paid!==b.paid) return a.paid?1:-1;
+    return new Date(a.due)-new Date(b.due);
+  });
+
+  list.innerHTML=sorted.map(b=>{
+    const st=b.paid?{cls:'paid',label:'已繳清'}:dueStatus(b.due);
+    return `<li class="bill-item">
+      <div class="bill-avatar">💳</div>
+      <div class="bill-info">
+        <div class="bill-name">${b.name}</div>
+        <div class="bill-meta">
+          <span class="bill-due ${st.cls}">${st.label}</span>
+          到期：${b.due}
+          ${b.note?`<span style="color:#9CA3AF">｜${b.note}</span>`:''}
+          ${b.paidDate?`<span style="color:#9CA3AF">｜繳清於 ${b.paidDate}</span>`:''}
+        </div>
+      </div>
+      <div class="bill-right">
+        <div class="bill-amount ${b.paid?'paid-amt':''}">${fmt(b.amount)}</div>
+        <button class="pay-btn ${b.paid?'paid-btn':''}" onclick="togglePaid(${b.id})">${b.paid?'取消繳清':'標記繳清'}</button>
+        <button class="bill-del" onclick="deleteBill(${b.id})">✕</button>
+      </div>
+    </li>`;
+  }).join('');
+}
+
+// ── Tx ──
+function onTypeChange(){
+  document.getElementById('sourceGroup').style.display=
+    document.getElementById('txType').value==='withdraw'?'none':'';
+}
+async function addTx(){
+  const type=document.getElementById('txType').value;
+  const amount=parseFloat(document.getElementById('txAmount').value);
+  const date=document.getElementById('txDate').value;
+  const desc=document.getElementById('txDesc').value.trim()||(type==='expense'?'支出':type==='income'?'收入':'提款');
+  const source=type==='withdraw'?'both':document.getElementById('txSource').value;
+  if(!amount||amount<=0){toast('請輸入有效金額');return;}
+  if(!date){toast('請選擇日期');return;}
+  if(type==='expense') source==='cash'?(state.cashBalance-=amount):(state.bankBalance-=amount);
+  else if(type==='income') source==='cash'?(state.cashBalance+=amount):(state.bankBalance+=amount);
+  else{state.bankBalance-=amount;state.cashBalance+=amount;}
+  const tx={id:Date.now(),date,type,desc,amount,source,cashBalance:state.cashBalance,bankBalance:state.bankBalance};
+  state.txs.unshift(tx);
+  saveLocal(); renderAll();
+  document.getElementById('txAmount').value='';
+  document.getElementById('txDesc').value='';
+  toast('✅ 已新增');
+  try{await apiGet('addTx',{data:JSON.stringify(tx)});document.getElementById('syncBadge').textContent='✓ 已同步';}catch(e){document.getElementById('syncBadge').textContent='⚠ 離線暫存';}
+}
+async function deleteTx(id){
+  if(!confirm('確定刪除這筆記錄？'))return;
+  const tx=state.txs.find(t=>String(t.id)===String(id));
+  if(!tx)return;
+  if(tx.type==='expense') tx.source==='cash'?(state.cashBalance+=tx.amount):(state.bankBalance+=tx.amount);
+  else if(tx.type==='income') tx.source==='cash'?(state.cashBalance-=tx.amount):(state.bankBalance-=tx.amount);
+  else{state.bankBalance+=tx.amount;state.cashBalance-=tx.amount;}
+  state.txs=state.txs.filter(t=>String(t.id)!==String(id));
+  saveLocal(); renderAll();
+  toast('🗑️ 已刪除');
+  try{await apiGet('deleteTx',{id});}catch(e){}
+}
+async function setBalance(type){
+  const val=parseFloat(document.getElementById(type+'Input').value);
+  if(isNaN(val)){toast('請輸入有效金額');return;}
+  state[type+'Balance']=val;
   saveLocal(); renderSummary();
-  document.getElementById(type + 'Input').value = '';
+  document.getElementById(type+'Input').value='';
   toast('✅ 餘額已更新');
-  try {
-    await apiGet('setBalance', { data: JSON.stringify({ cashBalance: state.cashBalance, bankBalance: state.bankBalance }) });
-  } catch(e) {}
+  try{await apiGet('setBalance',{data:JSON.stringify({cashBalance:state.cashBalance,bankBalance:state.bankBalance})});}catch(e){}
 }
 
-// ── Render ──
-function renderSummary() {
-  const today = now.toISOString().slice(0,10);
-  const mp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  let todayExp = 0, monthExp = 0, monthWd = 0;
-  state.txs.forEach(t => {
-    if (t.date === today && t.type === 'expense') todayExp += t.amount;
-    if (t.date && t.date.startsWith(mp)) {
-      if (t.type === 'expense') monthExp += t.amount;
-      if (t.type === 'withdraw') monthWd += t.amount;
-    }
+// ── History ──
+function renderHistory(){
+  const mn=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  document.getElementById('monthLabel').textContent=`${viewYear} 年 ${mn[viewMonth]}`;
+  const pfx=`${viewYear}-${String(viewMonth+1).padStart(2,'0')}`;
+  const filtered=state.txs.filter(t=>t.date&&t.date.startsWith(pfx));
+  let exp=0,inc=0,wd=0;
+  filtered.forEach(t=>{
+    if(t.type==='expense')exp+=t.amount;
+    if(t.type==='income')inc+=t.amount;
+    if(t.type==='withdraw')wd+=t.amount;
   });
-  document.getElementById('s-total').textContent = fmt(state.cashBalance + state.bankBalance);
-  document.getElementById('s-bank').textContent = fmt(state.bankBalance);
-  document.getElementById('s-cash').textContent = fmt(state.cashBalance);
-  document.getElementById('s-today').textContent = fmt(todayExp);
-  document.getElementById('s-month').textContent = fmt(monthExp);
-  document.getElementById('s-withdraw').textContent = fmt(monthWd);
-}
-
-function renderHistory() {
-  const mn = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  document.getElementById('monthLabel').textContent = `${viewYear} 年 ${mn[viewMonth]}`;
-  const pfx = `${viewYear}-${String(viewMonth+1).padStart(2,'0')}`;
-  const filtered = state.txs.filter(t => t.date && t.date.startsWith(pfx));
-  let exp = 0, inc = 0, wd = 0;
-  filtered.forEach(t => {
-    if (t.type === 'expense') exp += t.amount;
-    if (t.type === 'income') inc += t.amount;
-    if (t.type === 'withdraw') wd += t.amount;
-  });
-  document.getElementById('mExp').textContent = fmt(exp);
-  document.getElementById('mInc').textContent = fmt(inc);
-  document.getElementById('mWd').textContent = fmt(wd);
-
-  const icons = { expense:'💸', income:'💰', withdraw:'🏧' };
-  const list = document.getElementById('txList');
-  if (!filtered.length) { list.innerHTML = '<li class="empty">📭 本月尚無記錄</li>'; return; }
-  list.innerHTML = filtered.map(t => {
-    const sign = t.type === 'income' ? '+' : '-';
-    const amtCls = t.type === 'income' ? 'pos' : 'neg';
-    const tagCls = t.source === 'cash' ? 'cash' : t.source === 'bank' ? 'bank' : 'both';
-    const tagTxt = t.source === 'cash' ? '現金' : t.source === 'bank' ? '銀行' : '提款';
+  document.getElementById('mExp').textContent=fmt(exp);
+  document.getElementById('mInc').textContent=fmt(inc);
+  document.getElementById('mWd').textContent=fmt(wd);
+  const icons={expense:'💸',income:'💰',withdraw:'🏧'};
+  const list=document.getElementById('txList');
+  if(!filtered.length){list.innerHTML='<li class="empty">📭 本月尚無記錄</li>';return;}
+  list.innerHTML=filtered.map(t=>{
+    const sign=t.type==='income'?'+':'-';
+    const amtCls=t.type==='income'?'pos':'neg';
+    const tagCls=t.source==='cash'?'cash':t.source==='bank'?'bank':'both';
+    const tagTxt=t.source==='cash'?'現金':t.source==='bank'?'銀行':'提款';
     return `<li class="tx-item">
       <div class="tx-avatar ${t.type}">${icons[t.type]||'💳'}</div>
       <div class="tx-info">
@@ -405,50 +525,50 @@ function renderHistory() {
   }).join('');
 }
 
-function renderChart() {
-  const mn = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  const labels = [], expData = [], incData = [];
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+// ── Chart ──
+function renderChart(){
+  const mn=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  const labels=[],expData=[],incData=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
     labels.push(mn[d.getMonth()]);
-    const pfx = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    let exp = 0, inc = 0;
-    state.txs.forEach(t => {
-      if (t.date && t.date.startsWith(pfx)) {
-        if (t.type === 'expense') exp += t.amount;
-        if (t.type === 'income') inc += t.amount;
+    const pfx=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    let exp=0,inc=0;
+    state.txs.forEach(t=>{
+      if(t.date&&t.date.startsWith(pfx)){
+        if(t.type==='expense')exp+=t.amount;
+        if(t.type==='income')inc+=t.amount;
       }
     });
-    expData.push(Math.round(exp)); incData.push(Math.round(inc));
+    expData.push(Math.round(exp));incData.push(Math.round(inc));
   }
-  if (chartInst) { chartInst.destroy(); chartInst = null; }
-  chartInst = new Chart(document.getElementById('chartCanvas'), {
-    type: 'bar',
-    data: { labels, datasets: [
-      { label:'支出', data:expData, backgroundColor:'#F09595', borderRadius:6 },
-      { label:'收入', data:incData, backgroundColor:'#5DCAA5', borderRadius:6 }
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  chartInst=new Chart(document.getElementById('chartCanvas'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'支出',data:expData,backgroundColor:'#F09595',borderRadius:6},
+      {label:'收入',data:incData,backgroundColor:'#5DCAA5',borderRadius:6}
     ]},
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ display:false } },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
       scales:{
-        x:{ ticks:{ font:{size:12}, color:'#6B7280' }, grid:{display:false} },
-        y:{ ticks:{ font:{size:11}, color:'#6B7280', callback: v => 'NT$'+v.toLocaleString() }, grid:{color:'rgba(0,0,0,0.05)'} }
+        x:{ticks:{font:{size:12},color:'#6B7280'},grid:{display:false}},
+        y:{ticks:{font:{size:11},color:'#6B7280',callback:v=>'NT$'+v.toLocaleString()},grid:{color:'rgba(0,0,0,0.05)'}}
       }
     }
   });
 }
 
-function switchTab(name) {
-  ['record','history','balance','chart'].forEach(t => {
-    document.getElementById('panel-'+t).classList.toggle('active', t===name);
-    document.getElementById('nav-'+t).classList.toggle('active', t===name);
+function switchTab(name){
+  ['record','bills','history','balance'].forEach(t=>{
+    document.getElementById('panel-'+t).classList.toggle('active',t===name);
+    document.getElementById('nav-'+t).classList.toggle('active',t===name);
   });
-  if (name === 'history') renderHistory();
-  if (name === 'chart') setTimeout(renderChart, 50);
+  if(name==='history')renderHistory();
+  if(name==='balance')setTimeout(renderChart,50);
 }
-
-function prevMonth() { viewMonth--; if (viewMonth<0){viewMonth=11;viewYear--;} renderHistory(); }
-function nextMonth() { viewMonth++; if (viewMonth>11){viewMonth=0;viewYear++;} renderHistory(); }
+function prevMonth(){viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}renderHistory();}
+function nextMonth(){viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++;}renderHistory();}
 
 loadData();
 </script>
