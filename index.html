@@ -21,18 +21,35 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 8px)}
 
-/* Header */
-.header{background:var(--blue);color:#fff;padding:52px 20px 16px;position:sticky;top:0;z-index:100}
-.header h1{font-size:20px;font-weight:700;margin-bottom:14px}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.s-item{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px}
-.s-item.wide{grid-column:span 2;background:rgba(255,255,255,0.22)}
-.s-item.actual{grid-column:span 2;background:rgba(255,200,0,0.25)}
-.s-label{font-size:11px;opacity:.85;margin-bottom:3px}
-.s-value{font-size:17px;font-weight:700}
-.s-item.wide .s-value{font-size:24px}
-.s-item.actual .s-value{font-size:20px;color:#FFE566}
-.sync-badge{font-size:10px;color:rgba(255,255,255,0.65);text-align:right;margin-top:8px}
+/* Header — 精簡版 */
+.header{background:var(--blue);color:#fff;padding:52px 20px 12px;position:sticky;top:0;z-index:100}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;font-weight:700}
+.sync-badge{font-size:10px;color:rgba(255,255,255,0.65)}
+
+/* 首頁總覽 */
+.home-hero{background:var(--blue);color:#fff;padding:20px 20px 28px;margin:-16px -16px 16px;border-radius:0 0 24px 24px}
+.home-total-label{font-size:12px;opacity:.8;margin-bottom:4px}
+.home-total{font-size:36px;font-weight:700;margin-bottom:4px}
+.home-actual{font-size:13px;background:rgba(255,200,0,0.3);border-radius:8px;padding:4px 10px;display:inline-block;color:#FFE566;font-weight:600;margin-bottom:16px}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-card{background:rgba(255,255,255,0.15);border-radius:14px;padding:12px 14px}
+.home-card-label{font-size:11px;opacity:.8;margin-bottom:4px}
+.home-card-value{font-size:18px;font-weight:700}
+.home-card.green{background:rgba(29,158,117,0.3)}
+.home-card.red{background:rgba(226,75,74,0.3)}
+
+/* 快捷記帳按鈕 */
+.quick-add{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.quick-btn{height:52px;border-radius:14px;border:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.quick-btn.expense{background:#FDECEA;color:var(--red)}
+.quick-btn.income{background:#E3F5EE;color:var(--green)}
+.quick-btn:active{opacity:.8}
+
+/* 最近記錄 */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title{font-size:14px;font-weight:700;color:var(--text)}
+.see-all{font-size:12px;color:var(--blue);border:none;background:none;cursor:pointer;padding:0}
 
 /* Bottom Nav — 修正 iPhone 底部問題 */
 .bottom-nav{
@@ -159,20 +176,57 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 <div class="toast" id="toast"></div>
 
 <div class="header">
-  <h1>💰 我的記帳本</h1>
-  <div class="summary-grid">
-    <div class="s-item wide"><div class="s-label">總餘額（帳戶＋現金）</div><div class="s-value" id="s-total">NT$ 0</div></div>
-    <div class="s-item actual"><div class="s-label">⚡ 實際可用餘額（扣除未繳信用卡）</div><div class="s-value" id="s-actual">NT$ 0</div></div>
-    <div class="s-item"><div class="s-label">帳戶餘額</div><div class="s-value" id="s-bank">NT$ 0</div></div>
-    <div class="s-item"><div class="s-label">現金餘額</div><div class="s-value" id="s-cash">NT$ 0</div></div>
-    <div class="s-item"><div class="s-label">今日支出</div><div class="s-value" id="s-today">NT$ 0</div></div>
-    <div class="s-item"><div class="s-label">本月支出</div><div class="s-value" id="s-month">NT$ 0</div></div>
+  <div class="header-row">
+    <h1>💰 我的記帳本</h1>
+    <span class="sync-badge" id="syncBadge">⟳ 同步中...</span>
   </div>
-  <div class="sync-badge" id="syncBadge">⟳ 同步中...</div>
+</div>
+
+<!-- 首頁 -->
+<div class="panel active" id="panel-home">
+  <!-- 總覽Hero -->
+  <div class="home-hero">
+    <div class="home-total-label">總餘額（帳戶＋現金）</div>
+    <div class="home-total" id="h-total">NT$ 0</div>
+    <div class="home-actual" id="h-actual">⚡ 實際可用 NT$ 0</div>
+    <div class="home-grid">
+      <div class="home-card">
+        <div class="home-card-label">🏦 帳戶餘額</div>
+        <div class="home-card-value" id="h-bank">NT$ 0</div>
+      </div>
+      <div class="home-card">
+        <div class="home-card-label">💵 現金餘額</div>
+        <div class="home-card-value" id="h-cash">NT$ 0</div>
+      </div>
+      <div class="home-card red">
+        <div class="home-card-label">📅 今日支出</div>
+        <div class="home-card-value" id="h-today">NT$ 0</div>
+      </div>
+      <div class="home-card red">
+        <div class="home-card-label">📆 本月支出</div>
+        <div class="home-card-value" id="h-month">NT$ 0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快捷記帳 -->
+  <div class="quick-add">
+    <button class="quick-btn expense" onclick="quickAdd('expense')">💸 快速記支出</button>
+    <button class="quick-btn income" onclick="quickAdd('income')">💰 快速記收入</button>
+  </div>
+
+  <!-- 最近記錄 -->
+  <div class="section-header">
+    <span class="section-title">最近記錄</span>
+    <button class="see-all" onclick="switchTab('history')">查看全部 ›</button>
+  </div>
+  <div class="card">
+    <ul id="recentList" style="list-style:none"></ul>
+  </div>
 </div>
 
 <!-- 記帳 -->
-<div class="panel active" id="panel-record">
+<div class="panel" id="panel-record">
   <div class="card">
     <div class="card-title">✏️ 新增記錄</div>
     <div class="form-grid">
@@ -263,8 +317,12 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
   <div class="card"><ul id="txList" style="list-style:none"></ul></div>
 </div>
 
-<!-- 統計 -->
-<div class="panel" id="panel-stats">
+<!-- 統計＋設定（合併） -->
+<div class="panel" id="panel-more">
+  <!-- 統計區塊 -->
+  <div class="section-header" style="margin-bottom:12px">
+    <span class="section-title">📊 支出統計</span>
+  </div>
   <div class="month-nav">
     <button class="mnav-btn" onclick="prevStatsMonth()">‹</button>
     <span class="month-label" id="statsMonthLabel"></span>
@@ -283,10 +341,11 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
     <div class="card-title">分類明細</div>
     <div id="catBreakdownList"></div>
   </div>
-</div>
 
-<!-- 設定 -->
-<div class="panel" id="panel-balance">
+  <!-- 設定區塊 -->
+  <div class="section-header" style="margin-top:8px;margin-bottom:12px">
+    <span class="section-title">⚙️ 餘額設定</span>
+  </div>
   <div class="card">
     <div class="card-title">🏦 銀行帳戶餘額</div>
     <div class="bal-row">
@@ -304,11 +363,11 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="switchTab('record')" id="nav-record"><span class="nav-icon">✏️</span>記帳</button>
-  <button class="nav-btn" onclick="switchTab('bills')" id="nav-bills"><span class="nav-icon">💳</span>信用卡</button>
+  <button class="nav-btn active" onclick="switchTab('home')" id="nav-home"><span class="nav-icon">🏠</span>首頁</button>
+  <button class="nav-btn" onclick="switchTab('record')" id="nav-record"><span class="nav-icon">✏️</span>記帳</button>
   <button class="nav-btn" onclick="switchTab('history')" id="nav-history"><span class="nav-icon">📋</span>明細</button>
-  <button class="nav-btn" onclick="switchTab('stats')" id="nav-stats"><span class="nav-icon">📊</span>統計</button>
-  <button class="nav-btn" onclick="switchTab('balance')" id="nav-balance"><span class="nav-icon">⚙️</span>設定</button>
+  <button class="nav-btn" onclick="switchTab('bills')" id="nav-bills"><span class="nav-icon">💳</span>信用卡</button>
+  <button class="nav-btn" onclick="switchTab('more')" id="nav-more"><span class="nav-icon">📊</span>統計</button>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -414,26 +473,7 @@ function dueStatus(s){
   if(diff<=5)return{cls:'soon',label:`剩 ${diff} 天`};
   return{cls:'ok',label:`剩 ${diff} 天`};
 }
-function renderAll(){renderSummary();renderBills();renderHistory();}
-
-// ── Summary ──
-function renderSummary(){
-  const today=now.toISOString().slice(0,10);
-  const mp=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  let todayExp=0,monthExp=0;
-  state.txs.forEach(t=>{
-    if(t.date===today&&t.type==='expense')todayExp+=t.amount;
-    if(t.date&&t.date.startsWith(mp)&&t.type==='expense')monthExp+=t.amount;
-  });
-  const unpaid=state.bills.filter(b=>!b.paid).reduce((s,b)=>s+b.amount,0);
-  const total=state.cashBalance+state.bankBalance;
-  document.getElementById('s-total').textContent=fmt(total);
-  document.getElementById('s-actual').textContent=fmt(total-unpaid);
-  document.getElementById('s-bank').textContent=fmt(state.bankBalance);
-  document.getElementById('s-cash').textContent=fmt(state.cashBalance);
-  document.getElementById('s-today').textContent=fmt(todayExp);
-  document.getElementById('s-month').textContent=fmt(monthExp);
-}
+function renderAll(){renderHome();renderBills();renderHistory();}
 
 // ── Add Tx ──
 function onTypeChange(){
@@ -735,13 +775,62 @@ function switchChartTab(tab){
 
 // ── Nav ──
 function switchTab(name){
-  ['record','bills','history','stats','balance'].forEach(t=>{
+  ['home','record','bills','history','more'].forEach(t=>{
     document.getElementById('panel-'+t).classList.toggle('active',t===name);
     document.getElementById('nav-'+t).classList.toggle('active',t===name);
   });
   if(name==='history')renderHistory();
-  if(name==='stats')renderStats();
+  if(name==='more')renderStats();
+  if(name==='home')renderHome();
 }
+
+function quickAdd(type){
+  document.getElementById('txType').value=type;
+  onTypeChange();
+  switchTab('record');
+}
+
+function renderHome(){
+  const today=now.toISOString().slice(0,10);
+  const mp=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  let todayExp=0,monthExp=0;
+  state.txs.forEach(t=>{
+    if(t.date===today&&t.type==='expense')todayExp+=t.amount;
+    if(t.date&&t.date.startsWith(mp)&&t.type==='expense')monthExp+=t.amount;
+  });
+  const unpaid=state.bills.filter(b=>!b.paid).reduce((s,b)=>s+b.amount,0);
+  const total=state.cashBalance+state.bankBalance;
+  document.getElementById('h-total').textContent=fmt(total);
+  document.getElementById('h-actual').textContent=`⚡ 實際可用 ${fmt(total-unpaid)}`;
+  document.getElementById('h-bank').textContent=fmt(state.bankBalance);
+  document.getElementById('h-cash').textContent=fmt(state.cashBalance);
+  document.getElementById('h-today').textContent=fmt(todayExp);
+  document.getElementById('h-month').textContent=fmt(monthExp);
+
+  // 最近5筆
+  const icons={expense:'',income:'💰',withdraw:'🏧'};
+  const recent=state.txs.slice(0,5);
+  const list=document.getElementById('recentList');
+  if(!recent.length){list.innerHTML='<li class="empty">📭 尚無記錄</li>';return;}
+  list.innerHTML=recent.map(t=>{
+    const sign=t.type==='income'?'+':'-';
+    const amtCls=t.type==='income'?'pos':'neg';
+    const catInfo=t.cat?CAT_MAP[t.cat]:null;
+    const avatarContent=catInfo?catInfo.icon:(icons[t.type]||'💳');
+    return `<li class="tx-item">
+      <div class="avatar">${avatarContent}</div>
+      <div class="tx-info">
+        <div class="tx-name">${t.desc}</div>
+        <div class="tx-meta">${t.date}</div>
+      </div>
+      <div class="tx-right">
+        <div class="tx-amount ${amtCls}">${sign}${fmt(t.amount)}</div>
+      </div></li>`;
+  }).join('');
+}
+
+function renderSummary(){ renderHome(); }
+
 function prevMonth(){viewMonth--;if(viewMonth<0){viewMonth=11;viewYear--;}renderHistory();}
 function nextMonth(){viewMonth++;if(viewMonth>11){viewMonth=0;viewYear++;}renderHistory();}
 function prevStatsMonth(){statsMonth--;if(statsMonth<0){statsMonth=11;statsYear--;}renderStats();}
